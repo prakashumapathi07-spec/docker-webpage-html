@@ -72,3 +72,9 @@ color:#0ef777;
 </body>
 </html>
 ***********
+
+
+step 5: add pipeline and save run in jenkins
+
+step 6:  reun command "which is uploaded in image"
+
