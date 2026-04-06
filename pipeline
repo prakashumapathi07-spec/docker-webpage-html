@@ -1,0 +1,47 @@
+pipeline {
+ agent any
+
+ environment {
+  DOCKER_IMAGE = "prakashraj007/html-demo:latest"
+  KUBECONFIG = "C:\\ProgramData\\Jenkins\\.kube\\config"
+ }
+
+ stages {
+
+  stage('Clone Code') {
+   steps {
+    git branch: 'main',
+    url: 'https://github.com/NAVEEN001138/docker_ex2.git'
+   }
+  }
+
+  stage('Build Docker Image') {
+   steps {
+    bat 'docker build -t %DOCKER_IMAGE% .'
+   }
+  }
+
+  stage('Push Image') {
+   steps {
+    withCredentials([usernamePassword(
+      credentialsId: 'dockerhub-creds',
+      usernameVariable: 'USER',
+      passwordVariable: 'PASS'
+    )]) {
+      bat '''
+      echo %PASS% | docker login -u %USER% --password-stdin
+      docker push %DOCKER_IMAGE%
+      '''
+    }
+   }
+  }
+
+  stage('Deploy to Kubernetes') {
+   steps {
+    bat 'kubectl apply -f deployment.yaml --validate=false'
+   }
+  }
+
+ }
+
+}
