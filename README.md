@@ -1,5 +1,5 @@
 # docker-CICD-any-app-question-3
-
+step 1: open the docker desktop kubernates
 Step 1: create a Dockerfile
 *****************
 FROM nginx:latest
